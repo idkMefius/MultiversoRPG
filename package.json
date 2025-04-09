@@ -1,7 +1,7 @@
 {
   "name": "multiversorpg",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,11 +9,19 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~52.0.37",
+    "@expo/vector-icons": "^14.0.2",
+    "@types/yup": "^0.29.14",
+    "expo": "^52.0.44",
+    "expo-constants": "~17.0.8",
+    "expo-linking": "~7.0.5",
+    "expo-router": "~4.0.20",
     "expo-status-bar": "~2.0.1",
+    "formik": "^2.4.6",
     "react": "18.3.1",
-    "react-native": "0.76.7",
-    "@expo/vector-icons": "^14.0.2"
+    "react-native": "^0.76.9",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput, SafeAreaView, StatusBar, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { styles } from './styles';
+import { styles } from '../../../assets/styles/profile.styles';
 
-export function ProfileScreen() {
+export default function ProfileScreen() {
   const [user, setUser] = React.useState({
     name: 'Mateus Pacífico',
     email: 'mateus.pacifico@example.com',
     phone: '(82) 9 9689-8822',
-    photo: require('../../assets/imgs/profile.jpg')
+    photo: require('../../../assets/imgs/profile.jpg')
   });
 
   const [isEditing, setIsEditing] = React.useState(false);

@@ -74,5 +74,11 @@ export const styles = StyleSheet.create({
     color: '#FFD700',
     fontSize: 12,
     marginTop: 5
-  }
+  },
+  productPrice: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 4,
+  },
 });

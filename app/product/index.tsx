@@ -1,28 +1,41 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput, SafeAreaView, StatusBar, FlatList, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TextInput,
+  SafeAreaView,
+  StatusBar,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { styles } from './styles';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { styles } from '../../assets/styles/product.styles';
+import { products } from '../../assets/products';
 
 const { width } = Dimensions.get('window');
 
-export function ProductScreen() {
-  const product = {
-    id: '1',
-    name: 'Produto 1',
-    images: [
-      require('../../assets/imgs/product1.png'),
-      require('../../assets/imgs/product1.png'),
-      require('../../assets/imgs/product1.png')
-    ],
-    price: 29.99,
-    description:
-      'Este é um produto incrível com ótima qualidade e design moderno. Perfeito para o seu dia a dia!'
-  };
+export default function ProductScreen() {
+  const router = useRouter();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const product = products.find((p) => p.id === id);
 
   const [quantity, setQuantity] = React.useState(1);
   const [inputValue, setInputValue] = React.useState('1');
-
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+
+  if (!product) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>
+          Produto não encontrado
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   const increaseQuantity = () => {
     if (quantity < 99) {
@@ -42,7 +55,6 @@ export function ProductScreen() {
 
   const handleQuantityChange = (value: string) => {
     setInputValue(value);
-
     const newValue = parseInt(value, 10);
     if (!isNaN(newValue) && newValue >= 1 && newValue <= 99) {
       setQuantity(newValue);
@@ -80,7 +92,7 @@ export function ProductScreen() {
           key={index}
           style={[
             styles.indicator,
-            index === currentImageIndex && styles.activeIndicator
+            index === currentImageIndex && styles.activeIndicator,
           ]}
         />
       ))}
@@ -91,7 +103,7 @@ export function ProductScreen() {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#1E1E1E" barStyle="light-content" />
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={router.back}>
           <MaterialIcons name="arrow-back" size={24} color="#FFD700" />
         </TouchableOpacity>
       </View>
@@ -112,8 +124,11 @@ export function ProductScreen() {
 
         <Text style={styles.productName}>{product.name}</Text>
         <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
+        <Text style={styles.stockText}>Estoque disponível: {product.stock}</Text>
 
-        <Text style={styles.productDescription}>{product.description}</Text>
+        <Text style={styles.productDescription}>
+          Este é um produto incrível com ótima qualidade e design moderno. Perfeito para o seu dia a dia!
+        </Text>
 
         <View style={styles.quantityContainer}>
           <TouchableOpacity onPress={decreaseQuantity} style={styles.quantityButton}>

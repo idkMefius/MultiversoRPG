@@ -93,5 +93,11 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1E1E1E'
-  }
+  },
+  stockText: {
+    color: '#ccc',
+    fontSize: 14,
+    marginTop: 4,
+    marginBottom: 8,
+  },
 });

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, StatusBar, TextInput, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { styles } from './styles';
+import { styles } from '../../../assets/styles/cart.styles';
 
 const initialCartItems = [
-  { id: '1', name: 'Produto 1', image: require('../../assets/imgs/product1.png'), price: 29.99, quantity: 2 },
-  { id: '2', name: 'Produto 2', image: require('../../assets/imgs/product1.png'), price: 49.99, quantity: 1 },
-  { id: '3', name: 'Produto 3', image: require('../../assets/imgs/product1.png'), price: 19.99, quantity: 3 },
+  { id: '1', name: 'Produto 1', image: require('../../../assets/imgs/product1.png'), price: 29.99, quantity: 2 },
+  { id: '2', name: 'Produto 2', image: require('../../../assets/imgs/product1.png'), price: 49.99, quantity: 1 },
+  { id: '3', name: 'Produto 3', image: require('../../../assets/imgs/product1.png'), price: 19.99, quantity: 3 },
 ];
 
 const savedCards = [
@@ -14,7 +14,7 @@ const savedCards = [
   { id: '2', lastDigits: '5678', name: 'Cartão Secundário' },
 ];
 
-export function CartScreen() {
+export default function CartScreen() {
   const [cartItems, setCartItems] = React.useState(initialCartItems);
   const [paymentMethod, setPaymentMethod] = React.useState('pix');
   const [selectedCard, setSelectedCard] = React.useState('- Novo Cartão -');

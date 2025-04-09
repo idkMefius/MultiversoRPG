@@ -6,24 +6,24 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1E1E1E',
-    padding: 20
+    padding: 20,
   },
   icon: {
     width: 100,
     height: 100,
     marginBottom: 20,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFD700',
-    marginBottom: 10
+    marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
     color: '#FFF',
-    marginBottom: 30
+    marginBottom: 30,
   },
   input: {
     width: '100%',
@@ -32,13 +32,13 @@ export const styles = StyleSheet.create({
     color: '#FFF',
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    marginBottom: 15
+    marginBottom: 15,
   },
   passwordInput: {
     flex: 1,
@@ -46,30 +46,30 @@ export const styles = StyleSheet.create({
     backgroundColor: '#333',
     color: '#FFF',
     borderRadius: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   eyeIcon: {
     position: 'absolute',
-    right: 15
+    right: 15,
   },
   requirementsContainer: {
     width: '100%',
-    marginBottom: 20
+    marginBottom: 20,
   },
   requirementsTitle: {
     color: '#FFF',
     fontSize: 14,
-    marginBottom: 10
+    marginBottom: 10,
   },
   requirementItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5
+    marginBottom: 5,
   },
   requirementText: {
     color: '#FFF',
     fontSize: 14,
-    marginLeft: 5
+    marginLeft: 5,
   },
   button: {
     width: '100%',
@@ -78,19 +78,24 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1E1E1E'
+    color: '#1E1E1E',
   },
   footerText: {
     color: '#FFF',
-    marginTop: 10
+    marginTop: 10,
   },
   link: {
     color: '#FFD700',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+    alignSelf: 'flex-start',
+  },
 });
