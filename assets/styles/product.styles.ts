@@ -100,4 +100,20 @@ export const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
   },
+  successToast: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    backgroundColor: '#4BB543',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999,
+  },
+  successToastText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
 });

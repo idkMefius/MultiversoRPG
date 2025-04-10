@@ -142,5 +142,11 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1E1E1E'
-  }
+  },
+  quantityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 5,
+  }  
 });

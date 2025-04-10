@@ -15,6 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { styles } from '../../assets/styles/product.styles';
 import { products } from '../../assets/products';
+import { useCart } from '../../assets/contexts/cartContext';
 
 const { width } = Dimensions.get('window');
 
@@ -22,10 +23,12 @@ export default function ProductScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const product = products.find((p) => p.id === id);
+  const { addToCart } = useCart();
 
   const [quantity, setQuantity] = React.useState(1);
   const [inputValue, setInputValue] = React.useState('1');
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
 
   if (!product) {
     return (
@@ -99,6 +102,12 @@ export default function ProductScreen() {
     </View>
   );
 
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 2500);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#1E1E1E" barStyle="light-content" />
@@ -147,10 +156,16 @@ export default function ProductScreen() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.addToCartButton}>
+        <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
           <Text style={styles.addToCartButtonText}>Adicionar ao Carrinho</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {showSuccessMessage && (
+        <View style={styles.successToast}>
+          <Text style={styles.successToastText}>Produto adicionado ao carrinho!</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
