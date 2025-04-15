@@ -11,6 +11,7 @@ import {
 import { styles } from '../../../assets/styles/cart.styles';
 import { useCart } from '../../../assets/contexts/cartContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 export default function CartScreen() {
   const { cart, removeFromCart, clearCart, calculateTotal, updateQuantity } = useCart();
@@ -80,7 +81,10 @@ export default function CartScreen() {
               <Text style={styles.totalText}>Total: R$ {calculateTotal().toFixed(2)}</Text>
             </View>
 
-            <TouchableOpacity style={styles.checkoutButton}>
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={() => router.push('/checkout')}
+            >
               <Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
             </TouchableOpacity>
           </>
