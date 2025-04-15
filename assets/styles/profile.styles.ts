@@ -3,40 +3,40 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#1E1E1E'
+    backgroundColor: '#1E1E1E',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   backButton: {
-    marginRight: 10
+    marginRight: 10,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFD700'
+    color: '#FFD700',
   },
   editButtonText: {
     fontSize: 16,
-    color: '#FFD700'
+    color: '#FFD700',
   },
   container: {
     flexGrow: 1,
     padding: 20,
-    paddingTop: 10
+    paddingTop: 10,
   },
   profilePhotoContainer: {
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
   profilePhoto: {
     width: 120,
     height: 120,
-    borderRadius: 60
+    borderRadius: 60,
   },
   editPhotoButton: {
     position: 'absolute',
@@ -44,62 +44,79 @@ export const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: '#333',
     borderRadius: 20,
-    padding: 5
+    padding: 5,
   },
   inputContainer: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
     color: '#FFD700',
-    marginBottom: 5
+    marginBottom: 5,
   },
   input: {
     backgroundColor: '#333',
     borderRadius: 10,
     padding: 15,
     color: '#FFF',
-    fontSize: 16
+    fontSize: 16,
   },
   text: {
     fontSize: 16,
     color: '#FFF',
-    padding: 15
+    padding: 15,
   },
   changePasswordButton: {
     backgroundColor: '#FFD700',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 20,
   },
   changePasswordButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#1E1E1E'
+    color: '#1E1E1E',
   },
   changeEmailButton: {
     backgroundColor: '#444',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   changeEmailButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFD700'
+    color: '#FFD700',
   },
   deleteAccountButton: {
     backgroundColor: '#FF6347',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   deleteAccountButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFF'
-  }
+    color: '#FFF',
+  },
+  error: {
+    fontSize: 14,
+    color: '#FF6347',
+    marginTop: 5,
+  },
+  saveButton: {
+    backgroundColor: '#FFD700',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1E1E1E',
+  },
 });

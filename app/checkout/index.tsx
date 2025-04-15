@@ -49,7 +49,6 @@ const CheckoutScreen = () => {
     selectedMethod === 'boleto' ||
     (isNewCard && Object.values(formValues).every(value => value !== ''));
 
-  // Use useEffect to update formValues based on Formik's values
   useEffect(() => {
     if (isNewCard) {
       setFormValues({
@@ -81,7 +80,7 @@ const CheckoutScreen = () => {
               style={[styles.methodButton, selectedMethod === method && styles.methodButtonSelected]}
               onPress={() => {
                 setSelectedMethod(method);
-                setSelectedCard(''); // Limpa seleção ao trocar método
+                setSelectedCard('');
               }}
             >
               <Text
