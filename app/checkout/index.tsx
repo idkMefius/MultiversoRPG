@@ -290,8 +290,7 @@ const CheckoutScreen = () => {
             )}
           </>
         )}
-
-        {/* ✅ BOTÃO ÚNICO PARA TODOS OS MÉTODOS */}
+        
         {selectedMethod && (
           <TouchableOpacity
             style={[styles.payButton, !isPaymentEnabled && { opacity: 0.5 }]}
