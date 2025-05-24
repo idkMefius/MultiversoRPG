@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -31,6 +31,8 @@ const validationSchema = Yup.object().shape({
 
 const CheckoutScreen = () => {
   const router = useRouter();
+  const formikRef = useRef();
+
   const [selectedMethod, setSelectedMethod] = useState('');
   const [selectedCard, setSelectedCard] = useState('');
   const [formValues, setFormValues] = useState({
@@ -43,11 +45,16 @@ const CheckoutScreen = () => {
 
   const isNewCard = selectedCard === 'new';
 
-  const isPaymentEnabled =
-    (selectedMethod === 'credit' && (selectedCard === 'card1' || selectedCard === 'card2')) ||
-    selectedMethod === 'pix' ||
-    selectedMethod === 'boleto' ||
-    (isNewCard && Object.values(formValues).every(value => value !== ''));
+  const isPaymentEnabled = (() => {
+    if (selectedMethod === 'pix' || selectedMethod === 'boleto') return true;
+    if (selectedMethod === 'credit') {
+      if (selectedCard === 'card1' || selectedCard === 'card2') return true;
+      if (isNewCard) {
+        return Object.values(formValues).every(value => value.trim() !== '');
+      }
+    }
+    return false;
+  })();
 
   useEffect(() => {
     if (isNewCard) {
@@ -60,6 +67,20 @@ const CheckoutScreen = () => {
       });
     }
   }, [isNewCard]);
+
+  const handlePayment = () => {
+    if (selectedMethod === 'credit') {
+      if (selectedCard === 'card1') {
+        console.log('Pagamento com cartão final 1234');
+      } else if (selectedCard === 'card2') {
+        console.log('Pagamento com cartão final 5678');
+      } else if (isNewCard) {
+        formikRef.current?.handleSubmit();
+      }
+    } else {
+      console.log('Pagamento via', selectedMethod);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -77,14 +98,20 @@ const CheckoutScreen = () => {
           {['pix', 'boleto', 'credit'].map((method) => (
             <TouchableOpacity
               key={method}
-              style={[styles.methodButton, selectedMethod === method && styles.methodButtonSelected]}
+              style={[
+                styles.methodButton,
+                selectedMethod === method && styles.methodButtonSelected,
+              ]}
               onPress={() => {
                 setSelectedMethod(method);
                 setSelectedCard('');
               }}
             >
               <Text
-                style={[styles.methodButtonText, selectedMethod === method && styles.methodButtonTextSelected]}
+                style={[
+                  styles.methodButtonText,
+                  selectedMethod === method && styles.methodButtonTextSelected,
+                ]}
               >
                 {method === 'pix'
                   ? 'PIX'
@@ -99,27 +126,54 @@ const CheckoutScreen = () => {
         {selectedMethod === 'credit' && (
           <>
             <Text style={styles.sectionTitle}>Selecione um cartão</Text>
+
             <TouchableOpacity
-              style={[styles.cardOption, selectedCard === 'card1' && styles.cardOptionSelected]}
+              style={[
+                styles.cardOption,
+                selectedCard === 'card1' && styles.cardOptionSelected,
+              ]}
               onPress={() => setSelectedCard('card1')}
             >
-              <Text style={[styles.cardText, selectedCard === 'card1' && { color: '#1E1E1E' }]}>
+              <Text
+                style={[
+                  styles.cardText,
+                  selectedCard === 'card1' && { color: '#1E1E1E' },
+                ]}
+              >
                 Cartão com final 1234
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
-              style={[styles.cardOption, selectedCard === 'card2' && styles.cardOptionSelected]}
+              style={[
+                styles.cardOption,
+                selectedCard === 'card2' && styles.cardOptionSelected,
+              ]}
               onPress={() => setSelectedCard('card2')}
             >
-              <Text style={[styles.cardText, selectedCard === 'card2' && { color: '#1E1E1E' }]}>
+              <Text
+                style={[
+                  styles.cardText,
+                  selectedCard === 'card2' && { color: '#1E1E1E' },
+                ]}
+              >
                 Cartão com final 5678
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
-              style={[styles.cardOption, selectedCard === 'new' && styles.cardOptionSelected]}
+              style={[
+                styles.cardOption,
+                selectedCard === 'new' && styles.cardOptionSelected,
+              ]}
               onPress={() => setSelectedCard('new')}
             >
-              <Text style={[styles.cardText, selectedCard === 'new' && { color: '#1E1E1E' }]}>
+              <Text
+                style={[
+                  styles.cardText,
+                  selectedCard === 'new' && { color: '#1E1E1E' },
+                ]}
+              >
                 Usar novo cartão
               </Text>
             </TouchableOpacity>
@@ -127,8 +181,11 @@ const CheckoutScreen = () => {
             {isNewCard && (
               <>
                 <Text style={styles.sectionTitle}>Novo Cartão</Text>
+
                 <Formik
+                  innerRef={formikRef}
                   initialValues={formValues}
+                  enableReinitialize
                   validationSchema={validationSchema}
                   onSubmit={(values) => {
                     console.log('Pagamento com novo cartão:', values);
@@ -149,7 +206,10 @@ const CheckoutScreen = () => {
                         placeholderTextColor="#888"
                         keyboardType="numeric"
                         maxLength={16}
-                        onChangeText={handleChange('cardNumber')}
+                        onChangeText={(text) => {
+                          handleChange('cardNumber')(text);
+                          setFormValues({ ...values, cardNumber: text });
+                        }}
                         onBlur={handleBlur('cardNumber')}
                         value={values.cardNumber}
                       />
@@ -161,7 +221,10 @@ const CheckoutScreen = () => {
                         style={styles.input}
                         placeholder="Nome impresso no cartão"
                         placeholderTextColor="#888"
-                        onChangeText={handleChange('name')}
+                        onChangeText={(text) => {
+                          handleChange('name')(text);
+                          setFormValues({ ...values, name: text });
+                        }}
                         onBlur={handleBlur('name')}
                         value={values.name}
                       />
@@ -176,7 +239,10 @@ const CheckoutScreen = () => {
                           placeholderTextColor="#888"
                           keyboardType="numeric"
                           maxLength={2}
-                          onChangeText={handleChange('month')}
+                          onChangeText={(text) => {
+                            handleChange('month')(text);
+                            setFormValues({ ...values, month: text });
+                          }}
                           onBlur={handleBlur('month')}
                           value={values.month}
                         />
@@ -186,7 +252,10 @@ const CheckoutScreen = () => {
                           placeholderTextColor="#888"
                           keyboardType="numeric"
                           maxLength={4}
-                          onChangeText={handleChange('year')}
+                          onChangeText={(text) => {
+                            handleChange('year')(text);
+                            setFormValues({ ...values, year: text });
+                          }}
                           onBlur={handleBlur('year')}
                           value={values.year}
                         />
@@ -204,21 +273,16 @@ const CheckoutScreen = () => {
                         placeholderTextColor="#888"
                         keyboardType="numeric"
                         maxLength={4}
-                        onChangeText={handleChange('cvv')}
+                        onChangeText={(text) => {
+                          handleChange('cvv')(text);
+                          setFormValues({ ...values, cvv: text });
+                        }}
                         onBlur={handleBlur('cvv')}
                         value={values.cvv}
                       />
                       {touched.cvv && errors.cvv && (
                         <Text style={styles.error}>{errors.cvv}</Text>
                       )}
-
-                      <TouchableOpacity
-                        style={[styles.payButton, !isPaymentEnabled && { opacity: 0.5 }]}
-                        onPress={handleSubmit}
-                        disabled={!isPaymentEnabled}
-                      >
-                        <Text style={styles.payButtonText}>Efetuar Pagamento</Text>
-                      </TouchableOpacity>
                     </>
                   )}
                 </Formik>
@@ -227,13 +291,12 @@ const CheckoutScreen = () => {
           </>
         )}
 
-        {selectedMethod !== 'credit' && (
+        {/* ✅ BOTÃO ÚNICO PARA TODOS OS MÉTODOS */}
+        {selectedMethod && (
           <TouchableOpacity
             style={[styles.payButton, !isPaymentEnabled && { opacity: 0.5 }]}
             disabled={!isPaymentEnabled}
-            onPress={() => {
-              console.log('Pagamento via', selectedMethod);
-            }}
+            onPress={handlePayment}
           >
             <Text style={styles.payButtonText}>Efetuar Pagamento</Text>
           </TouchableOpacity>
