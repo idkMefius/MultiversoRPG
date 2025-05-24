@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
   View, Text, Image, TouchableOpacity, ScrollView, TextInput,
-  SafeAreaView, StatusBar, Alert
+  SafeAreaView, StatusBar, Alert,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker';
 import { styles } from '../../../assets/styles/profile.styles';
 
 const validationSchema = Yup.object().shape({
@@ -23,13 +24,35 @@ export default function ProfileScreen() {
     name: 'Mateus Pacífico',
     email: 'mateus.pacifico@example.com',
     phone: '(82) 9 9689-8822',
-    photo: require('../../../assets/imgs/profile.jpg')
+    photo: require('../../../assets/imgs/profile.jpg'),
   });
 
   const [isEditing, setIsEditing] = React.useState(false);
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
+  };
+
+  const pickImageFromCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permissão negada',
+        'Precisamos de permissão para acessar a câmera para alterar a foto de perfil.'
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setUser({ ...user, photo: { uri: result.assets[0].uri } });
+    }
   };
 
   const saveChanges = (values: { name: string; phone: string }) => {
@@ -78,9 +101,19 @@ export default function ProfileScreen() {
 
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.profilePhotoContainer}>
-          <Image source={user.photo} style={styles.profilePhoto} />
+          <Image
+            source={
+              typeof user.photo === 'number'
+                ? user.photo
+                : { uri: user.photo.uri }
+            }
+            style={styles.profilePhoto}
+          />
           {isEditing && (
-            <TouchableOpacity style={styles.editPhotoButton}>
+            <TouchableOpacity
+              style={styles.editPhotoButton}
+              onPress={pickImageFromCamera}
+            >
               <MaterialIcons name="edit" size={24} color="#FFD700" />
             </TouchableOpacity>
           )}
@@ -90,8 +123,16 @@ export default function ProfileScreen() {
           initialValues={{ name: user.name, phone: user.phone }}
           validationSchema={validationSchema}
           onSubmit={saveChanges}
+          enableReinitialize
         >
-          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
             <>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Nome</Text>
@@ -133,20 +174,32 @@ export default function ProfileScreen() {
                 )}
               </View>
 
-              <TouchableOpacity style={styles.changePasswordButton} onPress={handleChangePassword}>
+              <TouchableOpacity
+                style={styles.changePasswordButton}
+                onPress={handleChangePassword}
+              >
                 <Text style={styles.changePasswordButtonText}>Alterar Senha</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.changeEmailButton} onPress={handleChangeEmail}>
+              <TouchableOpacity
+                style={styles.changeEmailButton}
+                onPress={handleChangeEmail}
+              >
                 <Text style={styles.changeEmailButtonText}>Alterar E-mail</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.deleteAccountButton} onPress={handleDeleteAccount}>
+              <TouchableOpacity
+                style={styles.deleteAccountButton}
+                onPress={handleDeleteAccount}
+              >
                 <Text style={styles.deleteAccountButtonText}>Excluir Conta</Text>
               </TouchableOpacity>
 
               {isEditing && (
-                <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSubmit}
+                >
                   <Text style={styles.saveButtonText}>Salvar Alterações</Text>
                 </TouchableOpacity>
               )}
